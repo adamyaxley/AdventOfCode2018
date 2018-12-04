@@ -1,3 +1,6 @@
 [submodule "Unformat"]
 	path = External/Unformat
 	url = https://github.com/adamyaxley/Unformat
+[submodule "External/range-v3"]
+	path = External/range-v3
+	url = https://github.com/ericniebler/range-v3.git
