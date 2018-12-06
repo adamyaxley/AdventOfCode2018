@@ -1,9 +1,6 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 
 project(AdventOfCode2018)
-
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(External/DownloadProject/DownloadProject.cmake)
 
@@ -18,6 +15,8 @@ download_project(PROJ                googletest
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
+
 add_executable(
 	AdventOfCode2018
 	External/Unformat/unformat.h
@@ -28,3 +27,7 @@ target_link_libraries(
 	AdventOfCode2018
 	gtest
 	gtest_main)
+
+target_include_directories(
+	AdventOfCode2018 PUBLIC
+	"External/range-v3/include")
