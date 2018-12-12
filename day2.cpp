@@ -9,17 +9,16 @@ TEST(Problems, Day2)
 {
 	auto input = get_input("../../Input/day2.txt");
 	auto data = input
-		| view::split('\n');
+		| view::split('\n')
+		| view::transform([](auto a) { a |= action::sort; return a; });
 
 	// Part 1
 	auto exactlyTwo = [](auto id) {
-		id |= action::sort;
 		auto grouped = id | view::group_by(std::equal_to<>());
 		return any_of(grouped, [](auto g) { return distance(g) == 2; });
 	};
 
 	auto exactlyThree = [](auto id) {
-		id |= action::sort;
 		auto grouped = id | view::group_by(std::equal_to<>());
 		return any_of(grouped, [](auto g) { return distance(g) == 3; });
 	};
