@@ -1,26 +1,39 @@
 #include "gtest/gtest.h"
 #include "util.h"
 
-#include <numeric>
+#include <range/v3/all.hpp>
+
+using namespace ranges;
 
 TEST(Problems, Day1)
 {
 	auto input = get_input("../../Input/day1.txt");
-	auto data = string_split<int64>(input, "\n");
-	auto result = std::accumulate(data.begin(), data.end(), (int64)0);
+	auto data = input
+		| view::split('\n')
+		| view::transform([](auto i) { return unformat_arg<int>(i); });
+	//istream_range<int> data{ std::istringstream(input) };
 
 	// Part 1
+	auto result = accumulate(data, 0);
+
 	ASSERT_EQ(590, result);
 
-	std::set<int64> frequencyReached;
-	int64 currentFrequency = 0;
-	std::size_t index = 0;
-	while (frequencyReached.find(currentFrequency) == frequencyReached.end())
-	{
-		frequencyReached.insert(currentFrequency);
-		currentFrequency += data[index++ % data.size()];
-	}
-
 	// Part 2
-	ASSERT_EQ(83445, currentFrequency);
+	auto cumulative = data
+		| view::cycle
+		| view::partial_sum();
+
+	std::set<int> seen;
+	auto frequency = [&] {
+		for (auto f : cumulative)
+		{
+			if (seen.find(f) != seen.end())
+			{
+				return f;
+			}
+			seen.insert(f);
+		}
+	}();
+
+	ASSERT_EQ(83445, frequency);
 }
