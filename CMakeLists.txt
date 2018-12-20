@@ -21,7 +21,9 @@ add_executable(
 	AdventOfCode2018
 	External/Unformat/unformat.h
 	util.h
-	day1.cpp)
+	day1.cpp
+	day2.cpp
+	day3.cpp)
 
 target_link_libraries(
 	AdventOfCode2018
@@ -30,4 +32,5 @@ target_link_libraries(
 
 target_include_directories(
 	AdventOfCode2018 PUBLIC
-	"External/range-v3/include")
+	"External/range-v3/include"
+	"External/Unformat")

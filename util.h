@@ -3,10 +3,6 @@
 #include <string>
 #include <iostream>
 
-#include "External/Unformat/unformat.h"
-
-using namespace ay;
-
 inline std::string get_input(const char* path)
 {
 	std::string result;
@@ -36,4 +32,29 @@ inline std::string get_input(const char* path)
 	}
 
 	return result;
+}
+
+struct printer {
+	std::ostream &os_;
+	bool &first_;
+
+	template<typename T>
+	void operator()(T const &t) const
+	{
+		if (first_) first_ = false;
+		else os_ << ',';
+		os_ << t;
+	}
+};
+
+namespace std {
+	template<typename... Ts>
+	std::ostream &operator<<(std::ostream &os, std::tuple<Ts...> const &t)
+	{
+		os << '(';
+		auto first = true;
+		::ranges::tuple_for_each(t, ::printer{ os, first });
+		os << ')';
+		return os;
+	}
 }

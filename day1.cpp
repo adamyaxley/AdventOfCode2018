@@ -2,6 +2,7 @@
 #include "util.h"
 
 #include <range/v3/all.hpp>
+#include <unformat.h>
 
 using namespace ranges;
 
@@ -10,7 +11,7 @@ TEST(Problems, Day1)
 	auto input = get_input("../../Input/day1.txt");
 	auto data = input
 		| view::split('\n')
-		| view::transform([](auto i) { return unformat_arg<int>(i); });
+		| view::transform([](auto i) { return ay::unformat_arg<int>(i); });
 	//istream_range<int> data{ std::istringstream(input) };
 
 	// Part 1
