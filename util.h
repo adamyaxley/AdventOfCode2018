@@ -58,3 +58,12 @@ namespace std {
 		return os;
 	}
 }
+
+namespace std {
+	template <typename T, typename U>
+	std::ostream &operator<<(std::ostream &os, const std::pair<T, U> &t)
+	{
+		os << "(" << t.first << "," << t.second << ")";
+		return os;
+	}
+}

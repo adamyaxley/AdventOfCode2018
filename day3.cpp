@@ -13,6 +13,14 @@ struct Claim
 	int w, h;
 };
 
+namespace std {
+	std::ostream &operator<<(std::ostream &os, Claim const &t)
+	{
+		os << "{" << t.id << "," << t.x << "," << t.y << "," << t.w << "," << t.h << "}";
+		return os;
+	}
+}
+
 TEST(Problems, Day3)
 {
 	auto input = get_input("../../Input/day3.txt");
@@ -49,6 +57,21 @@ TEST(Problems, Day3)
 
 	// Part 2
 	{
+		auto disjointClaims = claims
+			| view::transform([&](auto& claim) {
+				return std::make_pair(claim, view::all(claims)); })
+			| view::filter([](auto& pair) {
+				auto& a = pair.first;
+				auto& bs = pair.second;
+				return all_of(bs, [&](auto& b) {
+					if (a.id == b.id)
+					{
+						return true;
+					}
+					// A doesn't overlap with B
+					return (a.x > b.x + b.w || a.x + a.w < b.x || a.y > b.y + b.h || a.y + a.h < b.y); }); });
 
+		ASSERT_EQ(1, distance(disjointClaims));
+		ASSERT_EQ(1124, disjointClaims.front().first.id);
 	}
 }
